@@ -2,23 +2,35 @@ from fastapi import FastAPI
 
 from app.api.routes.users import UserRoutes
 from app.api.routes.transactions import TransactionRoutes
-
 from app.db.database import Database
+from app.db.models import Models
 
-db_url = "sqlite:///./test.db"
-database = Database(db_url=db_url)
 
-database.create_tables()
+class Bandpay:
+    def __init__(self, db_url: str):
+        self.database = Database(db_url=db_url)
+        self.app = FastAPI(title="Bandpay API")
+        self._setup_routes()
 
-def create_app() -> FastAPI:
-    app = FastAPI(title="Bandpay API")
+    def _setup_routes(self):
+        self.models = Models(self.database.Base)
 
-    user_routes = UserRoutes(database.get_session)
-    transaction_routes = TransactionRoutes(database.get_session)
+        User, Transaction = self.models.define()
 
-    app.include_router(user_routes.router, prefix="/users", tags=["users"])
-    app.include_router(transaction_routes.router, prefix="/transactions", tags=["transactions"])
+        user_routes = UserRoutes(self.database, User)
+        transaction_routes = TransactionRoutes(self.database, User, Transaction)
 
-    return app
+        self.app.include_router(user_routes.router, prefix="/users", tags=["users"])
+        self.app.include_router(
+            transaction_routes.router, prefix="/transactions", tags=["transactions"]
+        )
 
-app = create_app()
+        self.database.create_tables()
+
+    def get_app(self) -> FastAPI:
+        return self.app
+
+
+# put main def here
+bandpay = Bandpay("sqlite:///test.db")
+app = bandpay.get_app()
