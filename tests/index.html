@@ -9,7 +9,6 @@
             fetch('http://localhost:8000/users', {  // Atualize para o endpoint correto da sua API
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Substitua com seu token de acesso Bandepay
                     'Content-Type': 'application/json'
                 }
             })
@@ -41,6 +40,6 @@
     <h1>API Request Button</h1>
     
     <button onclick="makeGetRequest()">Listar Usuários</button>
-    <ul id="user-list"></ul>  <!-- Elemento para exibir os usuários -->
+    <ul id="user-list"></ul> 
 </body>
 </html>
