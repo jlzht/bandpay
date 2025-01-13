@@ -1,6 +1,6 @@
 from fastapi import HTTPException, Depends, Path, Body
 from sqlalchemy.orm import Session
-from typing import Any
+from typing import Any, List
 
 from app.db.schemas import UserCreate
 from app.api.routes.routes import Routes
@@ -12,6 +12,21 @@ class UserRoutes(Routes):
         super().__init__(database)
 
     def _register_routes(self):
+        @self.router.get("/")
+        def get_all_users(db: Session = Depends(self.database.get_session)) -> List[dict]:
+            """
+            Retorna todos os usuários cadastrados.
+            """
+            users = db.query(self.User).all()
+            if not users:
+                return []
+            
+            return [
+                {"id": user.id, "name": user.name, "balance": user.balance, "status": user.status}
+                for user in users
+            ]
+          
+
         @self.router.get("/{user_id}/")
         def get_user(user_id: str, db: Session = Depends(self.database.get_session)):
             user = db.query(self.User).filter(self.User.id == user_id).first()
@@ -93,3 +108,26 @@ class UserRoutes(Routes):
             db.refresh(user)
 
             return {"id": user.id, field: getattr(user, field)}
+        
+        @self.router.patch("/{user_id}/update_balance")
+        def update_balance(
+            user_id: str,
+            balance: float = Body(..., description="Novo saldo para o usuário"),
+            db: Session = Depends(self.database.get_session),
+        ):
+            # Consultar o usuário pelo ID
+            user = db.query(self.User).filter(self.User.id == user_id).first()
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+            
+            # Atualizar o saldo
+            user.balance = balance
+            db.commit()
+            db.refresh(user)
+
+            return {
+                "id": user.id,
+                "name": user.name,
+                "balance": user.balance,
+                "status": user.status,
+            }

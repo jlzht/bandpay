@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button to Fetch Data</title>
+    <script>
+        function makeGetRequest() {
+            fetch('http://localhost:8000/users', {  // Atualize para o endpoint correto da sua API
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Substitua com seu token de acesso Bandepay
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('GET Response:', data);
+                alert('GET request successful! Check console for data.');
+                displayUsers(data);
+            })
+            .catch(error => console.error('GET Request Failed:', error));
+        }
+
+        function displayUsers(users) {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';  // Limpa qualquer lista anterior
+            if (users.length === 0) {
+                userList.innerHTML = '<li>Nenhum usuário encontrado.</li>';
+            } else {
+                users.forEach(user => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `ID: ${user.id}, Nome: ${user.name}, Status: ${user.status}, Saldo: ${user.balance}`;
+                    userList.appendChild(listItem);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>API Request Button</h1>
+    
+    <button onclick="makeGetRequest()">Listar Usuários</button>
+    <ul id="user-list"></ul>  <!-- Elemento para exibir os usuários -->
+</body>
+</html>
