@@ -13,8 +13,7 @@ class Bandpay:
         self._setup_routes()
 
     def _setup_routes(self):
-        self.models = Models(self.database.Base)
-
+        self.models = Models(self.database.base)
         User, Transaction = self.models.define()
 
         user_routes = UserRoutes(self.database, User)
@@ -29,8 +28,3 @@ class Bandpay:
 
     def get_app(self) -> FastAPI:
         return self.app
-
-
-# put main def here
-bandpay = Bandpay("sqlite:///test.db")
-app = bandpay.get_app()

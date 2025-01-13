@@ -2,17 +2,21 @@ from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
-    id: int
+    id: str
     name: str
     status: str
 
-
 class TransactionCreate(BaseModel):
-    user_id: int
+    user_id: str
     opt: str
     amount: float
 
+class PaymentRequestCreate(BaseModel):
+    id: str
+    amount: float
+    status: str
 
-class TransactionWebhook(BaseModel):
-    transaction_id: int
+class TransactionUpdate(BaseModel):
+    id: str
+    amount: float
     status: str
