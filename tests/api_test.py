@@ -16,8 +16,8 @@ def test_create_user():
     global passed_tests, total_tests
     print("Testing user creation...")
     user_data = {
-        "id": "20240000",
-        "name": "Davi Britto",
+        "id": "20240003",
+        "name": "Luisa Sonza",
         "status": "active"
     }
     

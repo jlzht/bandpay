@@ -18,11 +18,9 @@ def menu():
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-            # Listar Usuários
-            user = User(None, api_client)  # Passando None, pois não é necessário o ID do usuário para listar
+            user = User(None, api_client) 
             user.listar_usuarios()  # Chama o método para listar os usuários
         elif opcao == "2":
-            # Pesquisar Usuário
             user_id = input("Digite o ID do usuário para pesquisar: ")
             user = User(user_id, api_client)
             user.pesquisar_usuario(user_id)  # Chama o método para pesquisar o usuário pelo ID
@@ -39,7 +37,7 @@ def menu():
             user_id = input("Digite o ID do usuário para registrar o acesso: ")
             user = User(user_id, api_client)
             catraca = Catraca(user, api_client)
-            print(catraca.verificar_e_decrementar())
+            catraca.verificar_e_decrementar()
         elif opcao == "5":
             print("Saindo do guichê...")
             break

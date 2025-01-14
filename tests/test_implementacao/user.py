@@ -4,13 +4,13 @@ class User:
     def __init__(self, user_id, api_client):
         self.user_id = user_id
         self.api_client = api_client
-        self.api_url = api_client.api_url  # Acessando o api_url do api_client
+        self.api_url = api_client.api_url 
     
     def consultar_saldo(self):
         """
         Consulta o saldo de um usuário específico.
         """
-        url = f"{self.api_url}/users/{self.user_id}/balance"  # Corrigindo a URL para usar o api_url
+        url = f"{self.api_url}/users/{self.user_id}/balance" 
         try:
             response = requests.get(url)
             response.raise_for_status()  # Levanta um erro para status 4xx/5xx
