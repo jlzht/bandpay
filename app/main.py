@@ -3,19 +3,12 @@ from app.api.routes.users import UserRoutes
 from app.api.routes.transactions import TransactionRoutes
 from app.db.database import Database
 from app.db.models import Models
-from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI()
 
-# Configura o CORS para permitir requisições de qualquer origem
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Permite qualquer origem (ajuste conforme necessário)
-    allow_credentials=True,
-    allow_methods=["*"],  # Permite qualquer método (GET, POST, etc.)
-    allow_headers=["*"],  # Permite qualquer cabeçalho
-)
+#
 class Bandpay:
     def __init__(self, db_url: str):
         """
