@@ -4,11 +4,8 @@ from app.api.routes.transactions import TransactionRoutes
 from app.db.database import Database
 from app.db.models import Models
 
-
-
 app = FastAPI()
 
-#
 class Bandpay:
     def __init__(self, db_url: str):
         """
